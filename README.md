@@ -16,7 +16,7 @@ motion은 HTML태그를 호출해야한다고 했는데, 그동안 작성해온 
 
 styled component를 초반에 배울때 다른 작성된 컴포넌트의 속성을 상속받는법을 배웠는데 그것을 그대로 활용한다.
 
-```
+```Javascript
 styled(motion.div)`...css`;
 ```
 
@@ -28,15 +28,15 @@ styled(motion.div)`...css`;
 -delay: n시간 뒤에 동작
 -duration: n시간동안 애니메이션 동작
 
-```
-<Box transition={{duration: 3}}animate={{borderRadius:"100px"}}/>
+```JSX
+<Box transition={{duration: 3}} animate={{borderRadius:"100px"}}/>
 ```
 
 (Box컴포넌트는 3초동안 div의 바깥선이 둥글어진다.)
 
 -initial: 컴포넌트의 애니메이션 동작하기전 초기상태를 정의해줄 수 있다.
 
-\*초기 작성시 약간 애니메이션이 끝나고 탱탱볼처럼 튕~기는 느낌이 있는데, spring이라는게 걸려있기 때문이다. Ease~같은 효과이다. transition={{type:"tween"}} 과 같은 props로 type을 명시해서 변경해주면 된다.
+\*초기 작성시 약간 애니메이션이 끝나고 탱탱볼처럼 튕기는 느낌이 있는데, spring이라는게 걸려있기 때문이다. Ease같은 효과이다. transition={{type:"tween"}} 과 같은 props로 type을 명시해서 변경해주면 된다.
 
 참고 url : https://www.framer.com/docs/transition/
 
@@ -53,7 +53,7 @@ Variant를 Js Object로 넣어본다.
 object 변수명은 편한대로 작성하고 내부의 key값도 마음대로 작성한다.
 보통 start/end, visible, invisible등 편하게 작성한다.
 
-```
+```Javascript
 const myVars = {
     start : {scale:0},
     end: {
@@ -65,7 +65,7 @@ const myVars = {
     },
 ```
 
-```
+```JSX
 <Box variants={myVars} initial="start" animate="end" />
 ```
 
