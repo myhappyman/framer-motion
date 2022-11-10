@@ -166,3 +166,54 @@ const boxVariants = {
 Awesome!
 
 색상은 꼭 "#fff(hex코드)","blue"와 같은것이 아닌 rgba값으로 적용해줘야 한다.
+
+# 6. Gestures part Two
+
+드래그시 위아래 좌우 마음대로 돌아다니고 있는데 특정 영역을 벗어나지 못하도록 처리해보려고 한다.
+일단 drag에 x, y를 통해서 수직으로만 이동하거나 수평으로만 이동되도록 제약을 걸수 있다.
+`drag="x" or drag="y"`
+
+#### -dragConstraints
+
+그 외에 dragConstraints라는 prop이 있는데, 이곳에 드래깅이 가능한 영역을 정해줄 수 있다.
+`dragConstraints={{top:-50, bottom:50, left:-50, right:50}}`
+위 형태로 현 위치에서부터의 제약을 줄 수 있다.
+
+이런식으로 수학적 계산으로 통해서 제약을 줄 수도 있지만, 우리에겐 ref라는 것이 있었다. 요소를 선택하도록 도와주는데, useRef를 사용하면 계산을 하지 않고 제약을 처리할 수 있다.
+
+```Typescript
+function App() {
+  const biggerBoxRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <Wrapper>
+      <BiggerBox ref={biggerBoxRef}>
+        <Box drag dragConstraints={biggerBoxRef} />
+      </BiggerBox>
+    </Wrapper>
+  );
+}
+```
+
+useRef로 ref를 걸어주고 걸린 biggerBoxRef를 제약조건 prop에 넣어주면 끝이다. 알아서 걸린 요소의 끝부분까지만 동작하도록 해준다.
+
+#### -dragSnapToOrigin
+
+이것만으로도 만족스럽지만 동작 후 요소가 초기값인 중앙으로 돌아오게 하고 싶다면?
+`<Box drag dragSnapToOrigin />`
+dragSnapToOrigin prop을 drag처럼 추가만 해주면 벗어나자마자 중앙으로 돌아온다.
+
+#### -dragElastic
+
+다음으로 알아볼 속성은 탄력성이다.
+기본값은 0.5이고, 입력 가능한 값은 0 &#126; 1사이 값이어야 한다.
+제약부분에서부터 점점 멀리 드래그하면 요소와 마우스가 멀어지는게 보이는데 서로 당기는 힘을 말한다.
+
+-무한대로 잘 따라오게 만들기
+`<Box drag dragElastic={1} />`
+
+1로해두면 마우스와 같이 움직이고 0에 가까울수록 무거운? 느낌으로 잘 따라오지 않는다.
+
+-부모요소에 가두기
+`<Box drag dragElastic={0} />`
+0으로 해두면 제약조건에 부딫히게되면 따라오지 않는다. 즉 완전 갇혀버린 느낌을 낼 수 있다.
