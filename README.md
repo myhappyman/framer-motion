@@ -111,7 +111,7 @@ const circleVariants = {
 }
 ```
 
-```HTML
+```JSX
 <Box variants={boxVariants} initial="start" animate="end">
     <Circle variants={circleVariants}/>
     <Circle variants={circleVariants}/>
@@ -128,3 +128,41 @@ const circleVariants = {
 ##### -delayChildren: 부모에 지정하는 옵션이며, 자식 요소의 애니메이트 동작시간을 n초만큼 지연시킨다.
 
 #### -staggerChildren: 부모에 지정하는 옵션으로 첫번째 요소에 n초 그다음 자식요소에 n초 중첩 형태로 지연을 시켜준다.
+
+# 5. Gestures part One
+
+다음으로 알아볼 props는 while로 시작하는 속성들이다.
+
+### while props
+
+#### -whilehover: 마우스를 올리면 동작한다.
+
+#### -whileTap: 마우스를 클릭하면 동작한다.
+
+#### -whileDrag: 드래그 중에 동작한다.
+
+적용도 바로 props를 줘도 되지만, variants를 배웠으니 해당 방식으로 적용을 해본다.
+
+```Javascript
+const boxVariants = {
+  hover: {scale:1.5, rotateZ: 90},
+  click: {scale:1, borderRadius:"100px"},
+};
+```
+
+```JSX
+<Box
+    variants={boxVariants}
+    whileHover="hover"
+    whileTap="click"
+/>
+```
+
+이렇게 variants를 사용하여 문자열을 넣어준느걸 선호하는 이유는 복잡해지는 UI에서는 state값에 따라 동작해야할 애니메이트가 달라질수 있는데 조건문을 통해서 동작해야할 variants 문자열만 넣어주면 되기 때문이다.
+
+### drag
+
+그냥 속성에 drag만 추가하면 드래그가 된다...
+Awesome!
+
+색상은 꼭 "#fff(hex코드)","blue"와 같은것이 아닌 rgba값으로 적용해줘야 한다.
