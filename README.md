@@ -22,11 +22,15 @@ styled(motion.div)`...css`;
 
 이렇게 작성해주면 된다.
 
-기본적으로 많이 사용하는 props
--animate{{변경할 요소값}} : 애니메이션을 처리할 속성을 넣는다. 색상, 모양변경 사이즈 변경 등등등
--transition : 시간을 지연시키거나 ~시간동안 애니메이션을 동작시키거나 등등
--delay: n시간 뒤에 동작
--duration: n시간동안 애니메이션 동작
+### 기본적으로 많이 사용하는 props
+
+#### -animate{{변경할 요소값}} : 애니메이션을 처리할 속성을 넣는다. 색상, 모양변경 사이즈 변경 등등등
+
+#### -transition : 시간을 지연시키거나 ~시간동안 애니메이션을 동작시키거나 등등
+
+##### -transition(delay): n시간 뒤에 동작
+
+##### -transition(duration): n시간동안 애니메이션 동작
 
 ```JSX
 <Box transition={{duration: 3}} animate={{borderRadius:"100px"}}/>
@@ -34,7 +38,7 @@ styled(motion.div)`...css`;
 
 (Box컴포넌트는 3초동안 div의 바깥선이 둥글어진다.)
 
--initial: 컴포넌트의 애니메이션 동작하기전 초기상태를 정의해줄 수 있다.
+#### -initial: 컴포넌트의 애니메이션 동작하기전 초기상태를 정의해줄 수 있다.
 
 \*초기 작성시 약간 애니메이션이 끝나고 탱탱볼처럼 튕기는 느낌이 있는데, spring이라는게 걸려있기 때문이다. Ease같은 효과이다. transition={{type:"tween"}} 과 같은 props로 type을 명시해서 변경해주면 된다.
 
