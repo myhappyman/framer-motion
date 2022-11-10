@@ -28,9 +28,9 @@ styled(motion.div)`...css`;
 
 #### -transition : 시간을 지연시키거나 ~시간동안 애니메이션을 동작시키거나 등등
 
-##### -transition(delay): n시간 뒤에 동작
+##### -transition > delay: n초 뒤에 동작
 
-##### -transition(duration): n시간동안 애니메이션 동작
+##### -transition > duration: n초동안 애니메이션 동작
 
 ```JSX
 <Box transition={{duration: 3}} animate={{borderRadius:"100px"}}/>
@@ -74,3 +74,57 @@ const myVars = {
 ```
 
 variants에 작성한 object를 넣고 initial에는 시작할때 동작시킬 내용이 담긴 key값의 string을 적고 animate도 마찬가지다.(이름을 꼭 동일한 것으로 넣는다.)
+
+# 4. Variants part Two
+
+부모 노드에 variants를 걸어두면 하위에 존재하는 자식 컴포넌트들에게 자동으로 initial, animate가 동작된다.
+
+variants는 정의한 시작값의 key이름과 끝날때 key이름이 매칭되어야 한다고 했고, 이 내용이 그대로 하위 자식에 들어간다고 했다.
+이 원리를 이용해서 자식노드쪽 애니메이션도 시작과 끝나는 이름을 동일하게 작성하고 variants이름만 다르게 적용해주면 알아서 애니메이트가 동작 되는걸 볼 수 있다.
+
+```Javascript
+const boxVariants = {
+  start: {opacity: 0, scale: 0.5},
+  end: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      duration: 0.5,
+      bounce: 0.5
+    }
+  }
+};
+
+const circleVariants = {
+  start: {
+    scale: 0,
+
+  },
+  end: {
+    scale: 2,
+    transition: {
+      type: "spring",
+      bounce: 0.8
+    }
+  },
+}
+```
+
+```HTML
+<Box variants={boxVariants} initial="start" animate="end">
+    <Circle variants={circleVariants}/>
+    <Circle variants={circleVariants}/>
+    <Circle variants={circleVariants}/>
+    <Circle variants={circleVariants}/>
+</Box>
+```
+
+이제 Box컴포넌트가 opacity:1이 되고나서 Circle하나하나가 약간의 delay를 겪으면서 나타나야할텐데, 이런 경우 예전에 하드코딩을 한다면 variants를 4개를 만들어서 각각 delay를 다르게 줬을것이다.
+이런 경우를 예상하고 Orchestration파트에 정리가 되어있다.
+
+### Orchestration
+
+##### -delayChildren: 부모에 지정하는 옵션이며, 자식 요소의 애니메이트 동작시간을 n초만큼 지연시킨다.
+
+#### -staggerChildren: 부모에 지정하는 옵션으로 첫번째 요소에 n초 그다음 자식요소에 n초 중첩 형태로 지연을 시켜준다.
