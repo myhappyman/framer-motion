@@ -267,3 +267,33 @@ function App() {
 
 button태그에 onClick을 걸고 x.set(200) 처리를 해주었다.
 클릭을 하게되면 해당요소의 x축의 200만큼 이동을 시켜준다.
+
+# 8. MotionValues part Two
+
+useTransform을 활용하여 useMotionValue를 통해 가져온 값을 어떤 범위내의 값으로 변환하여 가져오도록 할 수 있다.
+useTransform에는 3개의 인자를 받는다.
+
+```Typescript
+const x = useMotionValue(0);
+const scale = useTransfrom(x, [-800, 0, 800], [2, 1, 0.1]);
+/**
+ * 위 정의한 값은 아래와 같다.
+ * const scale = useTransfrom(받는데이터, [제한을 둘 값들], [제한값에 따른 출력값]);
+ * -800 ~ -1까지는 2가 출력, 0은 1, 1~800은 0.1이 비례되어 출력된다.
+ * 즉, -400쯤에선 1.5가 400쯤에선 0.5를 받고 있을것이다.
+ **/
+```
+
+x축 드래그에 따라 커지고 작아지는 예제는 아래처럼 될 것이다.
+
+```JSX
+function App() {
+  const x = useMotionValue(0);
+  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]);
+  return (
+    <Wrapper>
+      <Box style={{x, scale}} drag="x" dragSnapToOrigin />
+    </Wrapper>
+  );
+}
+```
