@@ -217,3 +217,53 @@ dragSnapToOrigin prop을 drag처럼 추가만 해주면 벗어나자마자 중�
 -부모요소에 가두기
 `<Box drag dragElastic={0} />`
 0으로 해두면 제약조건에 부딫히게되면 따라오지 않는다. 즉 완전 갇혀버린 느낌을 낼 수 있다.
+
+# 7. MotionValues part One
+
+MotionValue는 애니메이션 내의 수치를 트래킹할 때 필요하다.
+<b>드래그등의 행위를 했을때, x축과 y축의 위치값을 찾거나 변경시킬 수 있다.</b>
+useMotionValue메소드를 생성하고 수치를 체크할 컴포넌트에 걸어주고 console.log를 찍어보면 동작은 잘 되고 있지만 데이터가 찍히지 않는것을 볼 수 있다.
+그 이유는 React의 state로 구성되어 있지 않기때문에, 위치가 바뀌거나 한다고 새롭게 렌더링 되지 않기때문에 console.log가 찍히지 않는다.
+<i>왜냐하면 그저 데이터값만 추적하고 싶기 때문이다. 중요한 개념이다! 약간의 드래그 이벤트를 한다고 모션이 조금 바뀔때마다 리렌더링이 일어난다면 어플리케이션에 부하가 올 수도 있을것이다!</i>
+
+데이터의 변화를 보고 싶다면 아래처럼 구성하면 된다.
+
+```JSX
+import {motion, useMotionValue} from "framer-motion";
+import { useEffect } from "react";
+
+function App() {
+  const x = useMotionValue(0);
+
+  useEffect(()=> {
+    x.onChange(()=> console.log(x.get()));
+  }, [x]);
+
+  return (
+    <Wrapper>
+      <Box style={{x}} drag="x" dragSnapToOrigin />
+    </Wrapper>
+  );
+}
+```
+
+useEffect에 useMotionValue값이 change되면 해당값을 get하도록 구성한다.
+
+get을 통해 해당 요소의 위치값을 얻을 수 있다.
+
+또는 반대로 set을 통해 위치를 강제로 바꿀수도 있다.
+
+```JSX
+function App() {
+  const x = useMotionValue(0);
+  return (
+    <Wrapper>
+      <button onClick={()=>x.set(200)}>Click Me!</button>
+      <Box style={{x}} drag="x" dragSnapToOrigin />
+    </Wrapper>
+  );
+}
+```
+
+button태그에 onClick을 걸고 x.set(200) 처리를 해주었다.
+클릭을 하게되면 해당요소의 x축의 200만큼 이동을 시켜준다.
