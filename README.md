@@ -297,3 +297,43 @@ function App() {
   );
 }
 ```
+
+# 9. MotionValues part Three
+
+특정 영역값에 따라 비율에 맞춰 scale값을 처리해보았는데, 이번엔 background color를 변경해보겠습니다.
+
+```JSX
+function App() {
+  const x = useMotionValue(0);
+  const rotateZ = useTransform(x, [-800, 800], [-360, 360]);
+  const gradient = useTransform(x,
+    [-800, 0, 800],
+    [
+      "linear-gradient(135deg, rgb(0, 210, 238), rgb(0, 83, 238))",
+      "linear-gradient(135deg, rgb(238, 0, 153), rgb(211, 0, 238))",
+      "linear-gradient(135deg, rgb(0, 238, 155), rgb(238, 178, 0))",
+    ]
+
+    )
+  return (
+    <Wrapper style={{background: gradient}}>
+      <Box style={{x, rotateZ}} drag="x" dragSnapToOrigin />
+    </Wrapper>
+  );
+}
+```
+
+`<Wrapper/>` 컴포넌트도 motion.div로 감싸주고 linear gradien의 값들을 넣어주면 알아서 비율에 맞춰 값을 출력해준다.
+
+#### -useViewportScroll
+
+이것도 motionValue값을 넘겨준다.(즉, state는 아니다)
+Scroll행위에 따른 값을 준다.
+
+##### `-scrollX, scrollY`
+
+각각 x, y축의 진행 값이다.
+
+##### `-scrollYProgress, scrollXProgress`
+
+전체 영역의 퍼센트로 수치화한다.(각 x, y축을 0~1로 알려줌)
