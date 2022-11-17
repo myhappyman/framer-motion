@@ -509,3 +509,19 @@ function App() {
 
 export default App;
 ```
+
+# 12. Slide part Two
+
+배열이 있다고 가정하고 해당 배열을 돌리면서 key값과 표현할값에 현재의 값을 넣어서 슬라이드를 만들었는데, 사실상 visible state의 값은 숫자로 next, prev버튼에 따라 제한되어 움직인다. 고로 map으로 표현하여 그리는 행위를 하지 않아도 key값이 바뀌면서 컴포넌트가 바뀐다고 react는 인지하기때문에 이것을 활용하여 이전과 똑같이 반복문으로 그려낸 컴포넌트와 동일한 행위를 할 수도 있다.
+
+#### - custom
+
+custom이란 variants에 데이터를 보내는 props이다.
+variants에 사용시 object에서 function으로 바꿔주고 object를 return해줘야한다.
+
+#### - ~exitBeforeEnter~ mode="wait"
+
+`<AnimatePresence mode="wait" custom={back} />`
+exit를 실행시키고 끝나면 다음 element가 올 수 있게한다.
+동시에 일어나는걸 막아준다.
+즉 앞에 일어나는 exit가 진행되고 다음 initial과 animate가 동작하게 도와준다. exitBeforeEnter는 사라지고 mode="wait"로 변경되었다.
