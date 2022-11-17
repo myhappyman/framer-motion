@@ -387,3 +387,63 @@ function App() {
   );
 }
 ```
+
+# 11. AnimatePresence
+
+AnimatePresence는 컴포넌트로 React App에서 사라지는 component를 animate화 시켜준다.
+
+그동안 작성해온 react에서 사라지는 컴포넌트에 대하여 애니메이션을 처리할 수 없었다. 왜냐하면 state의 boolean값에 따라 컴포넌트를 그리거나 null처리를 하였기 때문이다.
+
+하지만 motion을 써서 AnimatePresence 컴포넌트를 사용하면 사라질때 animate를 할 수 있다.
+사용법에 조건이 좀 있는데 아래와 같다.
+
+1. visible상태여야한다.
+2. {}를쓰는 조건문 전체를 AnimatePresence로 감싸줘야한다!
+
+#### -exit
+
+exit는 해당 컴포넌트가 사라질때 동작하는 props이다.
+
+지금까지 정보로 사라질때와 나타날때의 animate예제를 보겠다.
+
+```JSX
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
+const boxVariants = {
+  initial: {
+    opacity:0,
+    scale: 0
+  },
+  visible: {
+    opacity:1,
+    scale:1,
+    rotateZ: 360
+  },
+  leaving: {
+    opacity:0,
+    scale:0,
+    y:10
+  }
+}
+
+function App() {
+  const [showing, setShowing] = useState(false);
+  const toggleShowing = () => setShowing(prev => !prev);
+
+  return (
+    <Wrapper>
+      <button onClick={toggleShowing}>Click</button>
+      <AnimatePresence>{showing ? <Box
+                                    variants={boxVariants}
+                                    initial="initial"
+                                    animate="visible"
+                                    exit="leaving"
+                                  />
+                                : null}</AnimatePresence>
+
+    </Wrapper>
+  );
+}
+```
