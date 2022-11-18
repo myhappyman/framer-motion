@@ -525,3 +525,80 @@ variants에 사용시 object에서 function으로 바꿔주고 object를 return�
 exit를 실행시키고 끝나면 다음 element가 올 수 있게한다.
 동시에 일어나는걸 막아준다.
 즉 앞에 일어나는 exit가 진행되고 다음 initial과 animate가 동작하게 도와준다. exitBeforeEnter는 사라지고 mode="wait"로 변경되었다.
+
+# 14. You Need to Watch This
+
+#### -layout
+
+layout도 prop이다.
+element에게 주게되면 layout이 바뀔때 알아서 animate가 동작된다.
+실제로 동작되는 element에게 줘야한다. 부모에서 stlye로 바뀌고 있다면 영향받는 자식요소에게 layout속성만 주면 알아서 애니메이션이 된다.
+쩐다!!!
+
+```JSX
+function App() {
+  const [clicked, setClicked] = useState(false);
+  const toggleClicked = () => setClicked((prev) => !prev)
+
+  return (
+    <Wrapper onClick={toggleClicked}>
+      <Box
+        style={{
+          justifyContent : clicked ? "center" : "flex-start",
+          alignItems: clicked ? "center" : "flex-start",}}>
+        <Circle layout />
+      </Box>
+    </Wrapper>
+  );
+}
+```
+
+#### -layoutId
+
+서로 다른영역의 컴포넌트라도 layoutId라는것으로 서로 같은 string으로 연결만 해주면 알아서 애니메이션을 연결시켜준다.
+
+```JSX
+const Wrapper = styled(motion.div)`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Box = styled(motion.div)`
+  margin: 20px;
+  width: 400px;
+  height: 400px;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const Circle = styled(motion.div)`
+  background: #00a5ff;
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+function App() {
+  const [clicked, setClicked] = useState(false);
+  const toggleClicked = () => setClicked((prev) => !prev)
+
+  return (
+    <Wrapper onClick={toggleClicked}>
+      <Box>
+        {!clicked ? <Circle layoutId="circle" style={{borderRadius:"50px"}}/> : null}
+      </Box>
+      <Box>
+        {clicked ? <Circle layoutId="circle" style={{borderRadius:"0px"}}/> : null}
+      </Box>
+    </Wrapper>
+  );
+}
+```
